@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
+    console.log('messages:', messages); // 印出前端送來的訊息
 
     const response = await fetch(
       `${process.env.AZURE_OPENAI_ENDPOINT}/chat/completions?api-version=2023-07-01-preview`,
@@ -25,7 +26,11 @@ export async function POST(req: Request) {
       }
     );
 
-    const data = await response.json();
+    console.log('response status:', response.status); // 印出 HTTP 狀態碼
+    const rawBody = await response.text();
+    console.log('response body:', rawBody); // 印出原始回應內容
+
+    const data = JSON.parse(rawBody);
     const reply = data.choices?.[0]?.message?.content ?? '⚠️ 無法取得回覆';
 
     return NextResponse.json({ reply });
