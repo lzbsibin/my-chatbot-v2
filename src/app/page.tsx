@@ -1,14 +1,12 @@
 const handleSend = async () => {
   if (!input.trim()) return;
 
-  // 加入使用者訊息
-  const updatedMessages = [...messages, `👤 你：${input}`];
-  setMessages(updatedMessages);
+  const newMessages = [...messages, `👤 你：${input}`];
+  setMessages(newMessages);
   setInput('');
 
   try {
-    // 將訊息轉換成 GPT 格式（role-based）
-    const payload = updatedMessages
+    const payload = newMessages
       .filter((msg) => msg.startsWith('👤') || msg.startsWith('🤖'))
       .map((msg) => {
         if (msg.startsWith('👤')) {
@@ -25,8 +23,8 @@ const handleSend = async () => {
     });
 
     const data = await res.json();
-    setMessages([...updatedMessages, `🤖 AI：${data.reply}`]);
+    setMessages([...newMessages, `🤖 AI：${data.reply}`]);
   } catch (error) {
-    setMessages([...updatedMessages, '⚠️ 無法取得回覆，請稍後再試']);
+    setMessages([...newMessages, '⚠️ 無法取得回覆，請稍後再試']);
   }
 };
