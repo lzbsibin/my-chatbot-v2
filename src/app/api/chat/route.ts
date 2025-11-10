@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     console.log('response body:', rawBody); // 印出原始回應內容
 
     const data = JSON.parse(rawBody);
-    const reply = data.choices?.[0]?.message?.content ?? '⚠️ 無法取得回覆';
+    const reply = data.choices?.[0]?.message?.content ?? `⚠️ 回傳格式錯誤：${rawBody}`;
 
     return NextResponse.json({ reply });
   } catch (error) {
